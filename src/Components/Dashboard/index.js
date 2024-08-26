@@ -6,7 +6,6 @@ import HomeCalendar from "./Calendar";
 import Shipments from "./ShipmentDetails/Shipments";
 
 const Dashboard = () => {
-  
 
   return (
     <>
