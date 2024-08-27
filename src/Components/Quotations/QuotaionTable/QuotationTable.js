@@ -130,7 +130,7 @@ const QuotationTable = ({
     }
   }, [selectedStatus]);
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(filterKey, options, value, headerText, additionalStyles) {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
         return <span>{option.label}</span>;
@@ -144,6 +144,8 @@ const QuotationTable = ({
       }
     };
 
+    const dynamicWidth = headerText?.length * 8 + "px";
+
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -153,7 +155,7 @@ const QuotationTable = ({
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -548,7 +550,7 @@ const QuotationTable = ({
               className="px-4 d-flex"
             >
               Ref. ID
-              {MultiSelectFilter("ref_id", refId_, tblFilter.ref_id)}
+              {MultiSelectFilter("ref_id", refId_, tblFilter.ref_id, "Ref. ID")}
               {sort("ref_id")}
             </span>
           }
@@ -563,7 +565,7 @@ const QuotationTable = ({
               className="d-flex"
             >
               Origin
-              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {MultiSelectFilter("origin", Org_, tblFilter.origin, "Origin")}
               {sort("origin")}
             </span>
           }
@@ -579,7 +581,7 @@ const QuotationTable = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {MultiSelectFilter("destination", dest_, tblFilter.destination, "Destination")}
               {sort("destination")}
             </span>
           }
@@ -591,7 +593,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               Load
-              {MultiSelectFilter("load", load_, tblFilter.load)}
+              {MultiSelectFilter("load", load_, tblFilter.load, "Load")}
               {sort("load")}
             </span>
           }
@@ -603,7 +605,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               ETD
-              {MultiSelectFilter("etd", etd_, tblFilter.etd)}
+              {MultiSelectFilter("etd", etd_, tblFilter.etd, "ETD")}
               {sort("etd")}
             </span>
           }
@@ -615,7 +617,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               ETA
-              {MultiSelectFilter("eta", eta_, tblFilter.eta)}
+              {MultiSelectFilter("eta", eta_, tblFilter.eta, "ETA")}
               {sort("eta")}
             </span>
           }
@@ -630,7 +632,8 @@ const QuotationTable = ({
               {MultiSelectFilter(
                 "rate_validity",
                 rate_,
-                tblFilter.rate_validity
+                tblFilter.rate_validity,
+                "Rate Validity"
               )}
               {sort("rate_validity")}
             </span>
@@ -643,7 +646,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               Action
-              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {MultiSelectFilter("status", status_, tblFilter.status, "Action")}
               {sort("status")}
             </span>
           }

@@ -212,7 +212,7 @@ const CashTable = () => {
     }
   };
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(filterKey, options, value, headerText, additionalStyles) {
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option.label}</span>;
@@ -226,6 +226,8 @@ const CashTable = () => {
       }
     };
 
+    const dynamicWidth = headerText?.length * 8 + "px";
+
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -235,7 +237,7 @@ const CashTable = () => {
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -552,7 +554,8 @@ const CashTable = () => {
                         {MultiSelectFilter(
                           header.key,
                           getUniqueOptions(data, header.key),
-                          tblFilter[header.key]
+                          tblFilter[header.key],
+                          header?.label
                         )}
                         {sort(header.key)}
                       </div>
