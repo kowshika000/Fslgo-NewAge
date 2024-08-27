@@ -301,7 +301,7 @@ function DailyReportTable({
       }));
     }
   };
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(filterKey, options, value, headerText, additionalStyles) {
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option?.label}</span>;
@@ -315,6 +315,8 @@ function DailyReportTable({
       }
     };
 
+    const dynamicWidth = headerText?.length * 8 + "px";
+
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -326,7 +328,7 @@ function DailyReportTable({
           position: "absolute",
           left: "0px",
           opacity: "0",
-          width: "150px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -693,7 +695,8 @@ function DailyReportTable({
                       {MultiSelectFilter(
                         item?.header,
                         getUniqueOptions(data, item?.header),
-                        dsrFilter
+                        dsrFilter,
+                        item?.header
                       )}
                       {sort(item?.header)}
                       {/* <div

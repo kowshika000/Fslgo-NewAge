@@ -154,7 +154,7 @@ const AllBookings = ({
     }
   }, [selectedStatus]);
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(filterKey, options, value, headerText,additionalStyles) {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
         return <span>{option.label}</span>;
@@ -168,6 +168,8 @@ const AllBookings = ({
       }
     };
 
+    const dynamicWidth = headerText?.length * 8 + "px";
+
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -177,7 +179,7 @@ const AllBookings = ({
         style={{
           position: "absolute",
           opacity: "0",
-          width: "150px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -578,7 +580,7 @@ const AllBookings = ({
               className=" d-flex"
             >
               Shipment ID
-              {MultiSelectFilter("id", ShipId, tblFilter.id)}
+              {MultiSelectFilter("id", ShipId, tblFilter.id,"Shipment ID")}
               {sort("id")}
             </span>
           }
@@ -593,7 +595,7 @@ const AllBookings = ({
               className="py-3 d-flex "
             >
               Order No
-              {MultiSelectFilter("order_no", orderId_, tblFilter.order_no)}
+              {MultiSelectFilter("order_no", orderId_, tblFilter.order_no,"Order No")}
               {sort("order_no")}
             </span>
           }
@@ -609,7 +611,7 @@ const AllBookings = ({
               className=" d-flex"
             >
               Mode
-              {MultiSelectFilter("mode", Mode_, tblFilter.mode)}
+              {MultiSelectFilter("mode", Mode_, tblFilter.mode,"Mode")}
               {sort("mode")}
             </span>
           }
@@ -624,7 +626,7 @@ const AllBookings = ({
               className="d-flex"
             >
               Origin
-              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {MultiSelectFilter("origin", Org_, tblFilter.origin,"Origin")}
               {sort("origin")}
             </span>
           }
@@ -640,7 +642,7 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {MultiSelectFilter("destination", dest_, tblFilter.destination, "Destination")}
               {sort("destination")}
             </span>
           }
@@ -653,7 +655,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd)}
+              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd,"ETD/ATD")}
               {sort("etd_atd")}
             </span>
           }
@@ -666,7 +668,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               ETA/ATA
-              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata)}
+              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata, "ETA/ATA")}
               {sort("eta_ata")}
             </span>
           }
@@ -679,7 +681,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               Status
-              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {MultiSelectFilter("status", status_, tblFilter.status, "Status")}
               {sort("status")}
             </span>
           }
