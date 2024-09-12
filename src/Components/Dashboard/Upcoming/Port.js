@@ -11,7 +11,7 @@ import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 import { CircularProgress, Box } from "@mui/material";
 import { Select, Menu } from "antd";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
-import shipgif from '../../../assets/shiploadinggif.gif'
+import shipgif from '../../../assets/shipnxtgif.gif'
 
 const { Option } = Select;
 
