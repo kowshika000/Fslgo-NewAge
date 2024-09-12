@@ -404,5 +404,11 @@ export const CountryData = [
     countryCode:"TR",
     latitude: 38.9637,
     longitude:35.2433,
-  }
+  },
+  {
+    country:"Canada",
+    countryCode:"CA",
+    latitude: 45.4215,
+    longitude: -75.6972,
+  },
 ];
