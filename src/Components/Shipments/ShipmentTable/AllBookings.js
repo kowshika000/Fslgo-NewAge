@@ -363,8 +363,7 @@ const AllBookings = ({
                 <span>
                   <div style={{ fontSize: "13px" }}>ETA Changed</div>
                   <div style={{ fontSize: "10px" }}>
-                    Previous ETA : 10/05/2024 <br />
-                    New ETA : 12/05/2024
+                    {rowData?.updated_message}
                   </div>
                 </span>
               }

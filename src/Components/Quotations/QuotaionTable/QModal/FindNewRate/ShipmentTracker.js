@@ -216,7 +216,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
             >
               <Dropdown
                 value={selectedCurrency}
-                onChange={(e) => setSelectedCurrency(e.value)}
+                onChange={(e) => (settoscheck(true),setSelectedCurrency(e.value))}
                 options={currencyOptions}
                 valueTemplate={<DropdownTemplate value={selectedCurrency} />}
                 className="w-full md:w-14rem datehover"
