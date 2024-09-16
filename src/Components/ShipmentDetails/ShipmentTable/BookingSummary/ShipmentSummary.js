@@ -13,7 +13,7 @@ const ShipmentSummary = () => {
   console.log("ShipmentSummary", ViewBooking);
 
   const conatinerno = bookingData?.viewBookingData?.customercode[0]?.container_no
-  const conatiner_array = conatinerno.split(",")
+  const conatiner_array = conatinerno?.split(",")
 
   const requirementDescription =
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, labore facere nisi a placeat impedit aliquam unde. Ab fugiat consequuntur aperiam error? Veritatis dolor aliquid nihil perspiciatis cumque sed nulla quidem quisquam iure sit quibusdam mollitia quis, deleniti eius tempore asperiores fugiat nam key at omnis hic. Libero ipsum officiis exercitationem atque quidem asperiores voluptatum accusantium impedit. Dignissimos saepe mollitia earum, numquam, id doloremque velit obcaecati rem molestias praesentium, aspernatur nostrum temporibus dolor neque! Deserunt aspernatur, architecto recusandae id consequatur cumque enim numquam aliquam hic beatae natus autem placeat dignissimos blanditiis modi harum debitis consectetur perferendis similique, perspiciatis laborum. Inventore.";
