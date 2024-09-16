@@ -38,12 +38,13 @@ export default function MapMarker({
 
   useEffect(() => {
     if (mapMarkerData) {
-      const flattenedData = mapMarkerData.flatMap(
-        (country) => country.hbl_list
-      );
-      setFilteredData(flattenedData);
+      // Find the marker data based on markerId
+      const countryData = mapMarkerData.find((country) => country.country_code === markerId);
+      if (countryData) {
+        setFilteredData(countryData.hbl_list);
+      }
     }
-  }, [mapMarkerData]);
+  }, [mapMarkerData, markerId]);
 
   const dataShow = filteredData?.map((data) => data.hbl_no);
   console.log(
