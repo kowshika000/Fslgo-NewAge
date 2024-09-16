@@ -624,7 +624,7 @@ const AllBookings = ({
         // reorderableColumns
         // reorderableRows
         // onRowReorder={(e) => setFilteredData(e.value)}
-        scrollable={showAllData}
+        scrollable={true}
         scrollHeight={scrollHeight}
         dataKey="shipmentId"
         className={`${
