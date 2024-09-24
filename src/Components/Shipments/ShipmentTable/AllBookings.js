@@ -421,7 +421,7 @@ const AllBookings = ({
                   <div style={{ fontSize: "13px" }}>{EtaTitle()}</div>
                   <div style={{ fontSize: "10px" }}>
                     Estimated Arrival : {rowData.estimated_arrival} <br />
-                    Actual Arrival : {rowData.actual_arrival}
+                    Actual Arrival : {rowData.actuval_arrival}
                   </div>
                 </span>
               }
