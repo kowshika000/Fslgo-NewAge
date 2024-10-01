@@ -411,4 +411,10 @@ export const CountryData = [
     latitude: 45.4215,
     longitude: -75.6972,
   },
+  {
+    country:"Germany",
+    countryCode:"DE",
+    latitude: 51.1657,
+    longitude: 10.4515,
+  },
 ];
