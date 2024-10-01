@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import Pagination from "../../Core-Components/Pagination";
 import { useDispatch } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
-import { Tooltip } from "antd";
+import { Popover, Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -22,6 +22,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
 import "../../Dashboard/ShipmentHistory/ShipmentHistory.css";
 import shipgif from "../../../assets/shipnxtgif.gif";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 const AllBookings = ({
   filterData,
@@ -526,7 +528,25 @@ const AllBookings = ({
     if (!Array.isArray(filterValues)) {
       return null;
     }
+
     const renderedColumns = new Set();
+    const renderTags = (field,filterValues) => {
+      return(<div>
+        <ul>
+          {filterValues?.map((item,index)=>{
+            return <li style={{fontSize:"13px",fontWeight:"500",listStyle:"none"}} key ={index} >{item} <IoCloseCircleSharp onClick={()=>handleDeleteValue(field,item)} /></li>
+          })}
+        </ul>
+      </div>)
+    }
+
+    const handleDeleteValue = (field, value) => {
+      console.log(field,value)
+      const newValues = filterValues.filter((item) => item !== value);
+      console.log(field,newValues)
+      handleChangeFilter(field, newValues);
+    };
+
     return (
       <>
         {filterValues.map((option) => {
@@ -553,7 +573,24 @@ const AllBookings = ({
                   {field === "status" ? "Status" : ""}
                   {field === "origin" ? "Origin" : ""}
                   {field === "destination" ? "Destination" : ""}
-                  <span className="ms-2">
+                  &nbsp; :{" "}
+                  {filterValues?.length === 1 ? (
+                    <span className="me-2">{filterValues[0]}</span>
+                  ) : (
+                    <span>
+                      {filterValues[0]}&nbsp;
+                      <Popover content={renderTags(field,filterValues)} title="Filters" trigger="click" placement="bottom"> 
+                        <Button>
+                        <BsThreeDotsVertical
+                          size={10}
+                          style={{ marginBottom: "3px", marginLeft: "6px" }}
+                        />
+                        </Button>
+                      </Popover>
+                     
+                    </span>
+                  )}
+                  <span>
                     <CloseOutlined
                       onClick={() => {
                         handleChangeFilter(field, []);

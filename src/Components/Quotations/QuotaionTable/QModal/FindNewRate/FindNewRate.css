@@ -199,11 +199,11 @@
   margin-bottom: 5px;
   top: -45.512px !important;
 }
-.ant-popover .ant-popover-inner {
+/* .ant-popover .ant-popover-inner {
   background: transparent;
   box-shadow: none;
   padding: 0;
-}
+} */
 /* .div-colaligned {
   display: flex;
   flex-direction: column;

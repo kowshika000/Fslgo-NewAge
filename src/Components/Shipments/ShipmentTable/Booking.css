@@ -264,3 +264,9 @@
 .scrolloftable .p-datatable-wrapper::-webkit-scrollbar{
   display: none !important;
 }
+
+.ant-popover.wrapper-notify {
+  position: fixed;
+  
+  width: 150px;
+}

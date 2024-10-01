@@ -7,7 +7,7 @@ import group from "../../../../assets/Group 20851.svg";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Columns from "./Columns";
-import { Tooltip } from "antd";
+import { Popover, Tooltip } from "antd";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
 import shipgif from "../../../../assets/shipnxtgif.gif";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoCloseCircleSharp } from "react-icons/io5";
+import { Button } from "primereact/button";
 
 function DailyReportTable({
   filtercolumn,
@@ -349,6 +352,22 @@ function DailyReportTable({
     }
     const renderedColumns = new Set();
     console.log(renderedColumns);
+    const renderTags = (field,filterValues) => {
+      return(<div>
+        <ul>
+          {filterValues?.map((item,index)=>{
+            return <li key ={index} >{item} <IoCloseCircleSharp onClick={()=>handleDeleteValue(field,item)} /></li>
+          })}
+        </ul>
+      </div>)
+    }
+
+    const handleDeleteValue = (field, value) => {
+      console.log(field,value)
+      const newValues = filterValues.filter((item) => item !== value);
+      console.log(field,newValues)
+      handleChangeFilter(field, newValues);
+    };
     return (
       <>
         {filterValues?.map((option) => {
@@ -368,6 +387,23 @@ function DailyReportTable({
               >
                 <div>
                   {field ? field.split("_").join(" ") : ""}
+                  &nbsp; :{" "}
+                  {filterValues?.length === 1 ? (
+                    <span className="me-2">{filterValues[0]}</span>
+                  ) : (
+                    <span>
+                      {filterValues[0]}&nbsp;
+                      <Popover content={renderTags(field,filterValues)} title="Filters" trigger="click" placement="bottom"> 
+                        <Button>
+                        <BsThreeDotsVertical
+                          size={10}
+                          style={{ marginBottom: "3px", marginLeft: "6px" }}
+                        />
+                        </Button>
+                      </Popover>
+                     
+                    </span>
+                  )}
                   <span className="ms-2">
                     <CloseOutlined
                       onClick={() => {
