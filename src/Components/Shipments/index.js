@@ -7,6 +7,7 @@ import uil_globe from "../../assets/NewGlobeG.svg";
 import ph_table from "../../assets/NewListB.svg";
 import globBlack from "../../assets/NewGlobeB.svg";
 import listGray from "../../assets/NewListG.svg";
+import { Tooltip } from "antd";
 
 const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText,setOriginPort,setDestPort }) => {
   const haddleShowMap = () => {
@@ -29,29 +30,33 @@ const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText,setOriginPor
             showmap ? (
               <div className="py-4 d-flex justify-content-end gap-1">
                 <div style={{ cursor: "pointer" }}>
-                  <img
-                    src={listGray}
-                    onClick={haddleCloseMap}
-                    width="18px"
-                    height="14px"
-                  />
+                  <Tooltip title= "Dashboard View">
+                    <img
+                      src={listGray}
+                      onClick={haddleCloseMap}
+                      width="18px"
+                      height="14px"
+                    />
+                  </Tooltip>
                 </div>
                 <div style={{ cursor: "pointer" }}>
-                  <img
-                    src={globBlack}
-                    onClick={haddleShowMap}
-                    width="15px"
-                    height="15px"
-                  />
+                  <Tooltip title= "Map View">
+                    <img
+                      src={globBlack}
+                      onClick={haddleShowMap}
+                      width="15px"
+                      height="15px"
+                    />
+                  </Tooltip>
                 </div>
               </div>
             ) : (
               <div className="py-4 d-flex justify-content-end gap-1">
                 <div style={{ cursor: "pointer" }}>
-                  <img src={ph_table} onClick={haddleCloseMap} />
+                  <Tooltip title = "Dashboard View" ><img src={ph_table} onClick={haddleCloseMap} /></Tooltip>  
                 </div>
                 <div style={{ cursor: "pointer" }}>
-                  <img src={uil_globe} onClick={haddleShowMap} />
+                  <Tooltip title = "Map View" ><img src={uil_globe} onClick={haddleShowMap} /></Tooltip>   
                 </div>
               </div>
             )

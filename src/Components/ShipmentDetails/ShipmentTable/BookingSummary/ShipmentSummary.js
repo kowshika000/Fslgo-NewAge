@@ -10,12 +10,14 @@ import { Dialog, DialogContent } from "@mui/material";
 const ShipmentSummary = () => {
   const bookingData = useSelector((state) => state?.ViewBooking);
   const ViewBooking = bookingData?.viewBookingData?.customercode;
+  console.log(ViewBooking);
 
   const conatinerno =
     bookingData?.viewBookingData?.customercode[0]?.container_no;
   const conatiner_array = conatinerno?.split(",");
 
-  const requirementDescription = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit ipsum commodi inventore nam explicabo voluptatibus optio non voluptatem dolore soluta nisi voluptatum mollitia quam minus consectetur quisquam omnis, possimus asperiores harum aperiam aliquid voluptates doloribus? Odit accusamus quia reiciendis doloribus, quibusdam dolor mollitia, nam totam provident maiores ad deleniti. Officiis est voluptate dolore numquam pariatur unde placeat, facere a rerum! Illo praesentium asperiores architecto dolorem, accusamus eligendi quibusdam consequuntur tempora autem culpa temporibus! Facilis, ipsa dolorum. Cupiditate sit dolores optio magnam amet nemo obcaecati, eum repellat. Expedita quas dicta repellendus. Inventore mollitia totam laboriosam autem ipsam debitis animi, perspiciatis cum minima similique, sunt doloribus alias maxime magni nesciunt beatae quia iure earum nihil ut ea voluptatum, ratione ipsa. Veritatis dolores facere accusamus! Veritatis pariatur explicabo excepturi magni perspiciatis quidem inventore nostrum cupiditate ratione optio tenetur, iste ullam eos eligendi mollitia consequuntur sapiente ducimus vel suscipit, deleniti quaerat dolor dignissimos harum porro. Doloremque esse veritatis quod, sit similique porro harum voluptatem at, cum, eligendi ipsam nam! Alias saepe voluptatum beatae, tempore dolore dolorum quaerat excepturi harum qui, commodi vero voluptate totam possimus unde fuga quod vel veniam sapiente eligendi, odio assumenda illum. Blanditiis, quam! Suscipit, nisi consectetur. Laudantium, quaerat. Accusantium, ullam."
+  const requirementDescription =
+    "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit ipsum commodi inventore nam explicabo voluptatibus optio non voluptatem dolore soluta nisi voluptatum mollitia quam minus consectetur quisquam omnis, possimus asperiores harum aperiam aliquid voluptates doloribus? Odit accusamus quia reiciendis doloribus, quibusdam dolor mollitia, nam totam provident maiores ad deleniti. Officiis est voluptate dolore numquam pariatur unde placeat, facere a rerum! Illo praesentium asperiores architecto dolorem, accusamus eligendi quibusdam consequuntur tempora autem culpa temporibus! Facilis, ipsa dolorum. Cupiditate sit dolores optio magnam amet nemo obcaecati, eum repellat. Expedita quas dicta repellendus. Inventore mollitia totam laboriosam autem ipsam debitis animi, perspiciatis cum minima similique, sunt doloribus alias maxime magni nesciunt beatae quia iure earum nihil ut ea voluptatum, ratione ipsa. Veritatis dolores facere accusamus! Veritatis pariatur explicabo excepturi magni perspiciatis quidem inventore nostrum cupiditate ratione optio tenetur, iste ullam eos eligendi mollitia consequuntur sapiente ducimus vel suscipit, deleniti quaerat dolor dignissimos harum porro. Doloremque esse veritatis quod, sit similique porro harum voluptatem at, cum, eligendi ipsam nam! Alias saepe voluptatum beatae, tempore dolore dolorum quaerat excepturi harum qui, commodi vero voluptate totam possimus unde fuga quod vel veniam sapiente eligendi, odio assumenda illum. Blanditiis, quam! Suscipit, nisi consectetur. Laudantium, quaerat. Accusantium, ullam.";
 
   const totalWeight = "500000000010 KG";
   const totalVolume = "1023.45698 CBM";
@@ -104,11 +106,9 @@ const ShipmentSummary = () => {
     return { key: index + 1, container: value };
   });
 
-  console.log(newContainerArray);
-
   const MinContainer = newContainerArray?.filter((item) => item.key <= 1);
   console.log(MinContainer);
-  const MoreContainer = newContainerArray?.filter((item) => item.key >= 1 );
+  const MoreContainer = newContainerArray?.filter((item) => item.key >= 1);
   console.log(MoreContainer);
 
   //container_details_modal
@@ -128,13 +128,13 @@ const ShipmentSummary = () => {
     setTextCount(length);
   }, [textInput]);
 
-  const modalref = useRef()
+  const modalref = useRef();
 
   useEffect(() => {
     const handler = (e) => {
       if (!modalref?.current?.contains(e.target)) {
-        console.log("success")
-        handleContClose()
+        console.log("success");
+        handleContClose();
       }
     };
 
@@ -213,20 +213,20 @@ const ShipmentSummary = () => {
                   })}
                 </div>
                 <div className="col">
-                  <p className="row_head">Value</p>
+                  <p className="row_head">Package Type</p>
                   {ViewBooking?.map((item) => {
                     return (
                       <p className="row_head2">
-                        {item?.value?.length <= 12 ? (
-                          item?.value
+                        {item?.package_type?.length <= 12 ? (
+                          item?.package_type
                         ) : (
                           <Tooltip
                             placement="topLeft"
                             zIndex={9999}
-                            title={item?.value}
+                            title={item?.package_type}
                           >
                             <span role="button">
-                              {item?.value
+                              {item?.package_type
                                 ?.slice(0, 13)
                                 ?.trim()
                                 ?.split("")
@@ -241,27 +241,33 @@ const ShipmentSummary = () => {
               </div>
               <div className="row  mx-0">
                 <div className="col">
-                  <p className="row_head">Package Type</p>
-                  {/* {ViewBooking?.map((item) => {
-                    <p className="row_head2">
-                      {packageType.length <= 15 ? (
-                        packageType
-                      ) : (
-                        <Tooltip placement="topLeft" title={packageType}>
-                          <span role="button">
-                            {packageType
-                              .slice(0, 16)
-                              .trim()
-                              .split("")
-                              .join("") + "..."}
-                          </span>
-                        </Tooltip>
-                      )}
-                    </p>;
-                  })} */}
+                  <p className="row_head">No of Units</p>
+                  {ViewBooking?.map((item) => {
+                    return (
+                      <p className="row_head2">
+                        {item?.no_of_units?.length <= 12 ? (
+                          item?.no_of_units
+                        ) : (
+                          <Tooltip
+                            placement="topLeft"
+                            zIndex={9999}
+                            title={item?.no_of_units}
+                          >
+                            <span role="button">
+                              {item?.no_of_units
+                                ?.slice(0, 13)
+                                ?.trim()
+                                ?.split("")
+                                ?.join("") + "..."}
+                            </span>
+                          </Tooltip>
+                        )}
+                      </p>
+                    );
+                  })}
                 </div>
                 <div className="col">
-                  <p className="row_head">No of Units</p>
+                  {/* <p className="row_head">No of Units</p>
                   {ViewBooking?.map((item) => {
                     return (
                       <p className="row_head2">
@@ -283,11 +289,11 @@ const ShipmentSummary = () => {
                         )}
                       </p>
                     );
-                  })}
+                  })} */}
                 </div>
                 <div className="col">
-                  <p className="row_head">Stackable Cargo</p>
-                  <p className="row_head2">Yes</p>
+                  {/* <p className="row_head">Stackable Cargo</p>
+                  <p className="row_head2">Yes</p> */}
                 </div>
               </div>
             </div>
@@ -349,14 +355,37 @@ const ShipmentSummary = () => {
                     </div> */}
                 <div className="col">
                   <p className="row_head">Cargo Ready Date</p>
-                  <p className="row_head2">20 May, 2023</p>
+                  {ViewBooking?.map((item) => {
+                    console.log(item);
+                    return (
+                      <p className="row_head2">
+                        {item?.["cargo_ready_date "]?.length <= 12 ? (
+                          item?.["cargo_ready_date "]
+                        ) : (
+                          <Tooltip
+                            placement="topLeft"
+                            zIndex={9999}
+                            title={item?.["cargo_ready_date "]}
+                          >
+                            <span role="button">
+                              {item?.["cargo_ready_date "]
+                                ?.slice(0, 13)
+                                ?.trim()
+                                ?.split("")
+                                ?.join("") + "..."}
+                            </span>
+                          </Tooltip>
+                        )}
+                      </p>
+                    );
+                  })}
                 </div>
                 <div className="col">
                   <p className="row_head">Hs Code</p>
                   {ViewBooking?.map((item) => {
                     return (
                       <p className="row_head2">
-                        {item?.hs_code.length <= 12 ? (
+                        {item?.hs_code?.length <= 12 ? (
                           item?.hs_code
                         ) : (
                           <Tooltip
@@ -378,53 +407,60 @@ const ShipmentSummary = () => {
                   })}
                 </div>
               </div>
-              <div className="row  mx-0">
-                <div className="col">
-                  <p className="row_head">No of Containers</p>
-                  {ViewBooking?.map((item) => {
-                    return (
-                      <p className="row_head2">
-                        {item?.no_of_containers.length <= 40 ? (
-                          item?.no_of_containers
-                        ) : (
-                          <Tooltip
-                            placement="topLeft"
-                            zIndex={9999}
-                            title={item?.no_of_containers}
-                          >
-                            <span role="button">
-                              {item?.no_of_containers
-                                ?.slice(0, 41)
-                                ?.trim()
-                                ?.split("")
-                                ?.join("") + "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
-                    );
-                  })}
-                </div>
-                <div className="col">
-                <p className="row_head">Container Details</p>
-                  {newContainerArray?.length <= 1 ? (
-                    <>
-                      {newContainerArray.map((item, i) => {
+              {ViewBooking?.map((item) => {
+                return item?.product !== "AIR" ? (
+                  <div className="row  mx-0">
+                    <div className="col">
+                      <p className="row_head">No of Containers</p>
+                      {ViewBooking?.map((item) => {
                         return (
-                          <p key={i} className="row_head2">
-                            {item?.container}
+                          <p className="row_head2">
+                            {item?.no_of_containers?.length <= 40 ? (
+                              item?.no_of_containers
+                            ) : (
+                              <Tooltip
+                                placement="topLeft"
+                                zIndex={9999}
+                                title={item?.no_of_containers}
+                              >
+                                <span role="button">
+                                  {item?.no_of_containers
+                                    ?.slice(0, 41)
+                                    ?.trim()
+                                    ?.split("")
+                                    ?.join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
                           </p>
                         );
                       })}
-                    </>
-                  ) : (
-                    <>
-                      {MinContainer?.map((item, i) => (
-                        <p key={i} role="button" className="container_extrapara p-0" onClick={() => handleContOpen()}>
-                          {item?.container}...
-                        </p>
-                      ))}
-                      {/* <span
+                    </div>
+                    <div className="col">
+                      <p className="row_head">Container Details</p>
+                      {newContainerArray?.length <= 1 ? (
+                        <>
+                          {newContainerArray?.map((item, i) => {
+                            return (
+                              <p key={i} className="row_head2">
+                                {item?.container}
+                              </p>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <>
+                          {MinContainer?.map((item, i) => (
+                            <p
+                              key={i}
+                              role="button"
+                              className="container_extrapara p-0"
+                              onClick={() => handleContOpen()}
+                            >
+                              {item?.container}...
+                            </p>
+                          ))}
+                          {/* <span
                         role="button"
                         style={{ color: "#00c4ff" }}
                         className="container_extrapara"
@@ -432,11 +468,15 @@ const ShipmentSummary = () => {
                       >
                         Show more...
                       </span> */}
-                    </>
-                  )}
-                </div>
-                <div className="col"></div>
-              </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="col"></div>
+                  </div>
+                ) : (
+                  ""
+                );
+              })}
             </div>
           </div>
         </div>
@@ -455,7 +495,7 @@ const ShipmentSummary = () => {
                   <div className="d-flex">
                     <p className="parties_head">Shipper</p>
                     <p className="parties_enterprise">
-                      {item?.shipper_name.length <= 56 ? (
+                      {item?.shipper_name?.length <= 56 ? (
                         item?.shipper_name
                       ) : (
                         <Tooltip
@@ -477,7 +517,7 @@ const ShipmentSummary = () => {
                   <div className="d-flex">
                     <p className="parties_head">Consignee</p>
                     <p className="parties_enterprise">
-                      {item?.consignee_name.length <= 56 ? (
+                      {item?.consignee_name?.length <= 56 ? (
                         item?.consignee_name
                       ) : (
                         <Tooltip
@@ -499,7 +539,7 @@ const ShipmentSummary = () => {
                   <div className="d-flex">
                     <p className="parties_head">Notify</p>
                     <p className="parties_enterprise">
-                      {item?.notify_name.length <= 56 ? (
+                      {item?.notify_name?.length <= 56 ? (
                         item?.notify_name
                       ) : (
                         <Tooltip
@@ -521,7 +561,7 @@ const ShipmentSummary = () => {
                   <div className="d-flex">
                     <p className="parties_head">Billing</p>
                     <p className="parties_enterprise">
-                      {item?.billing_party_name.length <= 56 ? (
+                      {item?.billing_party_name?.length <= 56 ? (
                         item?.billing_party_name
                       ) : (
                         <Tooltip
@@ -589,7 +629,10 @@ const ShipmentSummary = () => {
             <div className="card-header">
               <p className="Header">Commodity Name</p>
             </div>
-            <div className="card-body" style={{ height: "160px",overflow: "auto" }}>
+            <div
+              className="card-body"
+              style={{ height: "160px", overflow: "auto" }}
+            >
               {/* {newContainerArray.length <= 4 ? (
                 <>
                   {newContainerArray.map((item,i) => {
@@ -636,11 +679,7 @@ const ShipmentSummary = () => {
               })} */}
 
               {ViewBooking?.map((item) => {
-                return (
-                  <p className="container_para">
-                      {item?.commodity_name}
-                  </p>
-                );
+                return <p className="container_para">{item?.commodity_name}</p>;
               })}
               {/* <p className="container_para">{requirementDescription}</p> */}
             </div>

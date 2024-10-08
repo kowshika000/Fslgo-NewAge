@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import Pagination from "../../Core-Components/Pagination";
 import { useDispatch } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
-import { Popover, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -37,6 +37,8 @@ const AllBookings = ({
   setshowAllData,
   scrollHeight,
   setscrollHeight,
+  popoverVisible,
+  setPopoverVisible,
 }) => {
   const itemsPerPage = 5;
   const dispatch = useDispatch();
@@ -47,6 +49,7 @@ const AllBookings = ({
   const [modalRowData, setModalRowData] = useState(null);
   const { loading } = useSelector((state) => state.Booking);
   // const [showAllData, setshowAllData] = useState(false)
+  const [selectfield, setselectfield] = useState("");
   const [tblFilter, setTblFilter] = useState({
     id: [],
     order_no: [],
@@ -328,35 +331,64 @@ const AllBookings = ({
     );
   };
   const bodyTemplate = (rowData) => {
+    const {
+      actual_departure,
+      estimated_departure,
+    } = rowData;
+    // Variable to store the result
+    let dayDifference = "";
+
+    // Check if either date is empty
+    if (actual_departure && estimated_departure) {
+      // Convert to Date objects
+      const actualDate = new Date(actual_departure);
+      const estimatedDate = new Date(estimated_departure);
+
+      // Calculate the time difference in milliseconds
+      const timeDifference = actualDate - estimatedDate;
+
+      // Convert milliseconds to days
+      dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+    }
     const getDepartMessage = () => {
-      if (rowData.depart_diff === "") return null;
-      if (rowData.depart_diff === "0") return { color: "green" };
-      if (rowData.depart_diff > 0) return { color: "red" };
-      if (rowData.depart_diff < 0) return { color: "green" };
+      if (dayDifference === "") return null;
+      if (dayDifference === 0) return { color: "#00c500" };
+      if (dayDifference > 0) return { color: "red" };
+      if (dayDifference < 0) return { color: "#00c500" };
     };
 
     const departInfo = getDepartMessage();
     const EtdTitle = () => {
-      if (rowData.depart_diff === "") return null;
-      if (rowData.depart_diff === "0") return <div>Departed On-time</div>;
-      if (rowData.depart_diff > 0)
+      if (dayDifference === "") return null;
+      if (dayDifference === 0) return <div>Departed On-time</div>;
+      if (dayDifference > 0)
         return (
           <div>
             Departed Late{" "}
-            <span style={{ color: "red" }}> (+{rowData.depart_diff} days)</span>
+            <span style={{ color: "red", fontWeight: "700" }}>
+              {" "}
+              (+{dayDifference} days)
+            </span>
           </div>
         );
-      if (rowData.depart_diff < 0)
+      if (dayDifference < 0)
         return (
           <div>
             Departed Early{" "}
-            <span style={{ color: "green" }}>({rowData.depart_diff} days)</span>
+            <span style={{ color: "#00c500", fontWeight: "700" }}>
+              ({dayDifference} days)
+            </span>
           </div>
         );
     };
     return (
       <div className="message">
-        <span style={{ color: departInfo ? departInfo.color : "" }}>
+        <span
+          style={{
+            color: departInfo ? departInfo.color : "",
+            fontWeight: "500",
+          }}
+        >
           {departInfo ? (
             <Tooltip
               placement="topLeft"
@@ -382,39 +414,65 @@ const AllBookings = ({
   };
 
   const bodyTemplateEta = (rowData) => {
+    const {
+      actuval_arrival,
+      estimated_arrival,
+    } = rowData;
+    // Variable to store the result
+    let dayDifference = "";
+
+    // Check if either date is empty
+    if (actuval_arrival && estimated_arrival) {
+      // Convert to Date objects
+      const actualDate = new Date(actuval_arrival);
+      const estimatedDate = new Date(estimated_arrival);
+
+      // Calculate the time difference in milliseconds
+      const timeDifference = actualDate - estimatedDate;
+
+      // Convert milliseconds to days
+      dayDifference = timeDifference / (1000 * 60 * 60 * 24);
+    }
+
+    console.log(dayDifference); // Will print the result or an empty string
     const getArrivalMessage = () => {
-      if (rowData.arrival_diff === "") return null;
-      if (rowData.arrival_diff === "0") return { color: "green" };
-      if (rowData.arrival_diff > 0) return { color: "red" };
-      if (rowData.arrival_diff < 0) return { color: "green" };
+      if (dayDifference === "") return null;
+      if (dayDifference === 0) return { color: "#00c500" };
+      if (dayDifference > 0) return { color: "red" };
+      if (dayDifference < 0) return { color: "#00c500" };
     };
     const arrivalInfo = getArrivalMessage();
     const EtaTitle = () => {
-      if (rowData.arrival_diff === "") return null;
-      if (rowData.arrival_diff === "0") return <div>Arrived On-time</div>;
-      if (rowData.arrival_diff > 0)
+      if (dayDifference === "") return null;
+      if (dayDifference === 0) return <div>Arrived On-time</div>;
+      if (dayDifference > 0)
         return (
           <div>
             Arrived Late{" "}
-            <span style={{ color: "red" }}>
+            <span style={{ color: "red", fontWeight: "700" }}>
               {" "}
-              (+{rowData.arrival_diff} days)
+              (+{dayDifference} days)
             </span>
           </div>
         );
-      if (rowData.arrival_diff < 0)
+      if (dayDifference < 0)
         return (
           <div>
             Arrived Early{" "}
-            <span style={{ color: "green" }}>
-              ({rowData.arrival_diff} days)
+            <span style={{ color: "#00c500", fontWeight: "700" }}>
+              ({dayDifference} days)
             </span>
           </div>
         );
     };
     return (
       <div className="message">
-        <span style={{ color: arrivalInfo ? arrivalInfo.color : "" }}>
+        <span
+          style={{
+            color: arrivalInfo ? arrivalInfo.color : "",
+            fontWeight: "500",
+          }}
+        >
           {arrivalInfo ? (
             <Tooltip
               placement="topLeft"
@@ -525,25 +583,84 @@ const AllBookings = ({
     );
   }
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    const popoverRef = useRef(null); // Reference for the popover
+    const handleClick = (field) => {
+      setselectfield(field);
+      setPopoverVisible((prev) => !prev);
+      console.log(field);
+      console.log(selectfield);
+    };
+
+    // Close the popover if clicked outside
+    useEffect(() => {
+      const handleOutsideClick = (event) => {
+        if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+          setselectfield("");
+          setPopoverVisible(false); // Close the popover if clicked outside
+        }
+      };
+
+      // Attach event listener
+      if (popoverVisible) {
+        document.addEventListener("mousedown", handleOutsideClick);
+      }
+
+      // Cleanup the event listener when popover is closed or unmounted
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+      };
+    }, [popoverVisible]);
+
     if (!Array.isArray(filterValues)) {
       return null;
     }
-
     const renderedColumns = new Set();
-    const renderTags = (field,filterValues) => {
-      return(<div>
-        <ul>
-          {filterValues?.map((item,index)=>{
-            return <li style={{fontSize:"13px",fontWeight:"500",listStyle:"none"}} key ={index} >{item} <IoCloseCircleSharp onClick={()=>handleDeleteValue(field,item)} /></li>
-          })}
-        </ul>
-      </div>)
-    }
+    const renderTags = (field, filterValues) => {
+      return (
+        <div
+          ref={popoverRef}
+          style={{
+            position: "absolute",
+            top:"0",
+            width: "100%",
+            background: "white",
+            zIndex: "10",
+            borderRadius: "8px",
+            boxShadow: "0 0 10px 5px rgba(0, 0, 0, 0.2)",
+            margin: "10px 0px",
+          }}
+        >
+          <ul style={{ padding: "8px", margin: "0px" }}>
+            {filterValues?.map((item, index) => {
+              return (
+                <li
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "700",
+                    listStyle: "none",
+                    color: "#000000c9",
+                  }}
+                  key={index}
+                >
+                  {item}{" "}
+                  <IoCloseCircleSharp
+                    role="button"
+                    onClick={() => {
+                      handleDeleteValue(field, item);
+                    }}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    };
 
     const handleDeleteValue = (field, value) => {
-      console.log(field,value)
+      console.log(field, value);
       const newValues = filterValues.filter((item) => item !== value);
-      console.log(field,newValues)
+      console.log(field, newValues);
       handleChangeFilter(field, newValues);
     };
 
@@ -564,7 +681,7 @@ const AllBookings = ({
                 className="px-2 py-1"
                 rounded
               >
-                <div>
+                <div style={{ position: "relative" }}>
                   {field === "order_no" ? "Order No" : ""}
                   {field === "id" ? "Shipment Id" : ""}
                   {field === "mode" ? "Mode" : ""}
@@ -579,15 +696,18 @@ const AllBookings = ({
                   ) : (
                     <span>
                       {filterValues[0]}&nbsp;
-                      <Popover content={renderTags(field,filterValues)} title="Filters" trigger="click" placement="bottom"> 
-                        <Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleClick(field)}
+                      >
                         <BsThreeDotsVertical
                           size={10}
                           style={{ marginBottom: "3px", marginLeft: "6px" }}
                         />
-                        </Button>
-                      </Popover>
-                     
+                      </Button>
+                      {popoverVisible &&
+                        (field === selectfield) &&
+                        renderTags(field, filterValues)}
                     </span>
                   )}
                   <span>

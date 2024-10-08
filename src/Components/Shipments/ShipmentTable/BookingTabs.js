@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Row, Col, Image } from "antd";
+import { Tabs, Row, Col, Image, Tooltip } from "antd";
 import AllBookings from "./AllBookings";
 import { DsrDownloadRequest } from "../../../Redux/Actions/DsrDownloadAction";
 import "../ShipBookingTabs.css";
@@ -38,13 +38,15 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const [filterReport, setFilterReport] = useState();
   const [download, setdownload] = useState();
   const [filterMonthValue, setFilterMonthValue] = useState(null);
-  const [showMore, setshowMore] = useState(false)
-  const [showAllData, setshowAllData] = useState(false)
-  const [scrollHeight, setscrollHeight] = useState("653px")
+  const [showMore, setshowMore] = useState(false);
+  const [showAllData, setshowAllData] = useState(false);
+  const [scrollHeight, setscrollHeight] = useState("653px");
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
   const tabCount = ShipmentData?.booking?.statuswise_count;
+  const [popoverVisible, setPopoverVisible] = useState(false); // State to control Popover visibility
+  const [dsrpopoverVisible, setDsrPopoverVisible] = useState(false); // State to control Popover visibility
   // const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
 
   let schedule;
@@ -226,47 +228,35 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     });
   };
 
-
   //for tab change according to show display showmore button
 
   useEffect(() => {
-    if(activeTab && schedule){
-      if(Number(activeTab) === 1 && Number(schedule?.all) > 10){
-        setshowMore(true)
-      }
-      else if(Number(activeTab) === 2 && Number(schedule?.booked) > 10){
-        setshowMore(true)
-      }
-      else if(Number(activeTab) === 3 && Number(schedule?.in_transit) > 10){
-        setshowMore(true)
-      }
-      else if(Number(activeTab) === 4 && Number(schedule?.arrived) > 10){
-        setshowMore(true)
-      }
-      else if(Number(activeTab) === 5 && Number(schedule?.delivered) > 10){
-        setshowMore(true)
-      }
-      else if(Number(activeTab) === 6 && Number(schedule?.cancelled) > 10){
-        setshowMore(true)
-      }
-      else{
-        setshowMore(false)
+    if (activeTab && schedule) {
+      if (Number(activeTab) === 1 && Number(schedule?.all) > 10) {
+        setshowMore(true);
+      } else if (Number(activeTab) === 2 && Number(schedule?.booked) > 10) {
+        setshowMore(true);
+      } else if (Number(activeTab) === 3 && Number(schedule?.in_transit) > 10) {
+        setshowMore(true);
+      } else if (Number(activeTab) === 4 && Number(schedule?.arrived) > 10) {
+        setshowMore(true);
+      } else if (Number(activeTab) === 5 && Number(schedule?.delivered) > 10) {
+        setshowMore(true);
+      } else if (Number(activeTab) === 6 && Number(schedule?.cancelled) > 10) {
+        setshowMore(true);
+      } else {
+        setshowMore(false);
       }
     }
-    
 
-    setshowAllData(false)
-    setscrollHeight("653px")
-    console.log("working")
-  }, [activeTab && schedule,activeTab])
+    setshowAllData(false);
+    setscrollHeight("653px");
+    console.log("working");
+  }, [activeTab && schedule, activeTab]);
 
-
-  
-  
-  console.log(schedule?.all,activeTab)
-  console.log(activeTab)
-  console.log(showMore)
-
+  console.log(schedule?.all, activeTab);
+  console.log(activeTab);
+  console.log(showMore);
 
   const handleUpcomingDep = () => {
     setSelectedButton("Upcoming Departures");
@@ -452,11 +442,13 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                       width: "32px",
                     }}
                   >
-                    <img
-                      src={ButtonList}
-                      style={{ cursor: "pointer" }}
-                      onClick={handlShowFilter}
-                    />
+                    <Tooltip title="Dashboard View">
+                      <img
+                        src={ButtonList}
+                        style={{ cursor: "pointer" }}
+                        onClick={handlShowFilter}
+                      />
+                    </Tooltip>
                   </div>
                   <div
                     style={{
@@ -467,7 +459,9 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                     className="ms-1 me-2"
                     onClick={handleTableChange}
                   >
+                    <Tooltip title="DSR">
                     <img src={Group1} style={{ cursor: "pointer" }} />
+                    </Tooltip>
                   </div>
                 </>
               ) : (
@@ -478,11 +472,13 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                       width: "32px",
                     }}
                   >
-                    <img
-                      src={Buttonfade}
-                      style={{ cursor: "pointer" }}
-                      onClick={handlShowFilter}
-                    />
+                    <Tooltip title="Dashboard View">
+                      <img
+                        src={Buttonfade}
+                        style={{ cursor: "pointer" }}
+                        onClick={handlShowFilter}
+                      />
+                    </Tooltip>
                   </div>
                   <div
                     style={{
@@ -493,7 +489,9 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                     className="ms-1 me-2"
                     onClick={handleTableChange}
                   >
-                    <img src={button16} style={{ cursor: "pointer" }} />
+                    <Tooltip title="DSR">
+                      <img src={button16} style={{ cursor: "pointer" }} />
+                    </Tooltip>
                   </div>
                 </>
               )}
@@ -501,34 +499,40 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                 ""
               ) : (
                 <div className="d-flex align-items-center">
-                  <img
-                    src={image1}
-                    alt="img"
-                    className="me-1"
-                    role="button"
-                    style={{ width: "12px", height: "13.5px" }}
-                    onClick={() => setSchedulemodal(true)}
-                  />
-                  <img
-                    src={image2}
-                    alt="img"
-                    className="mx-1"
-                    style={{ width: "12px", height: "13.5px" }}
-                    role="button"
-                    // onClick={handleDownloadDsr}
-                    onClick={exportExcel}
-                  />
-                  <img
-                    src={image3}
-                    alt="img"
-                    className="ms-1 me-3"
-                    style={{
-                      width: "12px",
-                      height: "13.5px",
-                      cursor: "pointer",
-                    }}
-                    onClick={handleSaveDsr}
-                  />
+                  <Tooltip title = "Auto Scheduler">
+                    <img
+                      src={image1}
+                      alt="img"
+                      className="me-1"
+                      role="button"
+                      style={{ width: "12px", height: "13.5px" }}
+                      onClick={() => setSchedulemodal(true)}
+                    />
+                  </Tooltip>
+                  <Tooltip title = "Download">
+                    <img
+                      src={image2}
+                      alt="img"
+                      className="mx-1"
+                      style={{ width: "12px", height: "13.5px" }}
+                      role="button"
+                      // onClick={handleDownloadDsr}
+                      onClick={exportExcel}
+                    />
+                  </Tooltip>
+                  <Tooltip title = "Save Column Settings">
+                    <img
+                      src={image3}
+                      alt="img"
+                      className="ms-1 me-3"
+                      style={{
+                        width: "12px",
+                        height: "13.5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={handleSaveDsr}
+                    />
+                  </Tooltip>
                 </div>
               )}
             </Col>
@@ -555,6 +559,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
               setshowAllData={setshowAllData}
               scrollHeight={scrollHeight}
               setscrollHeight={setscrollHeight}
+              popoverVisible={popoverVisible}
+              setPopoverVisible={setPopoverVisible}
             />
           ) : (
             <DailyReportTable
@@ -564,6 +570,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
               setFilterReport={setFilterReport}
               setdownload={setdownload}
               download={download}
+              dsrpopoverVisible={dsrpopoverVisible}
+              setDsrPopoverVisible={setDsrPopoverVisible}
             />
           )}
         </Col>

@@ -7,7 +7,7 @@ import group from "../../../../assets/Group 20851.svg";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Columns from "./Columns";
-import { Popover, Tooltip } from "antd";
+import { Tooltip } from "antd";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
@@ -27,11 +27,14 @@ function DailyReportTable({
   setFilterReport,
   setdownload,
   download,
+  dsrpopoverVisible,
+  setDsrPopoverVisible
 }) {
   //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
+  const [selectfield, setselectfield] = useState("");
   const [showAllData, setshowAllData] = useState(false);
   const [scrollHeight, setscrollHeight] = useState("653px");
   const payload = {
@@ -347,20 +350,77 @@ function DailyReportTable({
     );
   }
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    const popoverRef = useRef(null); // Reference for the popover
+    const handleClick = (field) => {
+      setselectfield(field);
+      setDsrPopoverVisible((prev) => !prev);
+      console.log(field);
+      console.log(selectfield);
+    };
+
+    //Close the popover if clicked outside
+    useEffect(() => {
+      const handleOutsideClick = (event) => {
+        if (popoverRef.current && !popoverRef.current.contains(event.target)) {
+          setselectfield("");
+          setDsrPopoverVisible(false); // Close the popover if clicked outside
+        }
+      };
+
+      // Attach event listener
+      if (dsrpopoverVisible) {
+        document.addEventListener("mousedown", handleOutsideClick);
+      }
+
+      // Cleanup the event listener when popover is closed or unmounted
+      return () => {
+        document.removeEventListener("mousedown", handleOutsideClick);
+      };
+    }, [dsrpopoverVisible]);
     if (!Array?.isArray(filterValues)) {
       return "";
     }
     const renderedColumns = new Set();
     console.log(renderedColumns);
-    const renderTags = (field,filterValues) => {
-      return(<div>
-        <ul>
-          {filterValues?.map((item,index)=>{
-            return <li key ={index} >{item} <IoCloseCircleSharp onClick={()=>handleDeleteValue(field,item)} /></li>
-          })}
-        </ul>
-      </div>)
-    }
+    const renderTags = (field, filterValues) => {
+      return (
+        <div
+          ref={popoverRef}
+          style={{
+            position: "absolute",
+            background: "white",
+            zIndex: "10",
+            borderRadius: "8px",
+            boxShadow: "0 0 10px 5px rgba(0, 0, 0, 0.2)",
+            margin: "10px 0px",
+          }}
+        >
+          <ul style={{ padding: "8px", margin: "0px" }}>
+            {filterValues?.map((item, index) => {
+              return (
+                <li
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "700",
+                    listStyle: "none",
+                    color: "#000000c9",
+                  }}
+                  key={index}
+                >
+                  {item}{" "}
+                  <IoCloseCircleSharp
+                    role="button"
+                    onClick={() => {
+                      handleDeleteValue(field, item);
+                    }}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    };
 
     const handleDeleteValue = (field, value) => {
       console.log(field,value)
@@ -379,13 +439,13 @@ function DailyReportTable({
                 style={{
                   backgroundColor: "#0DA3DE",
                   marginRight: "10px",
-                  position: "relative",
+                  // position: "relative",
                   fontSize: "10px",
                 }}
                 className="px-2 py-1"
                 rounded
               >
-                <div>
+                <div style={{ position: "relative" }}>
                   {field ? field.split("_").join(" ") : ""}
                   &nbsp; :{" "}
                   {filterValues?.length === 1 ? (
@@ -393,14 +453,15 @@ function DailyReportTable({
                   ) : (
                     <span>
                       {filterValues[0]}&nbsp;
-                      <Popover content={renderTags(field,filterValues)} title="Filters" trigger="click" placement="bottom"> 
-                        <Button>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleClick(field)}
+                      >
                         <BsThreeDotsVertical
                           size={10}
                           style={{ marginBottom: "3px", marginLeft: "6px" }}
                         />
-                        </Button>
-                      </Popover>
+                      </Button>
                      
                     </span>
                   )}
@@ -410,8 +471,11 @@ function DailyReportTable({
                         handleChangeFilter(field, []);
                       }}
                     />
-                  </span>
+                  </span>   
                 </div>
+                {dsrpopoverVisible &&
+                      (field === selectfield) &&
+                      renderTags(field, filterValues)}  
               </Tag>
             );
           }
@@ -643,9 +707,9 @@ function DailyReportTable({
             style={{
               marginBottom: "20px",
               padding: "5px 0px",
-              position: "sticky",
-              top: "0px",
-              left: "0px",
+              // position: "sticky",
+              // top: "0px",
+              // left: "0px",
             }}
           >
             <div className="mt-1 scroll-container">
